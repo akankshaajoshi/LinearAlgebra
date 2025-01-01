@@ -2,6 +2,8 @@
 
 Welcome to the **Linear Algebra Visualization using Manim**, a comprehensive resource for learning and exploring linear algebra concepts through interactive tools, visualizations, and Python programming.
 
+Youtube: https://youtu.be/h6snIfntUP0
+
 ## Features
 
 - **Vectors**: Learn the basics of vectors and operations like addition, scalar multiplication, and dot product.
