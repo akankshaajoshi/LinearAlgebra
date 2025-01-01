@@ -3,20 +3,26 @@ from manim import *
 class LinearIndependenceAndBases(Scene):
     def construct(self):
         # Title for the module
-        title = Text("Linear Independence and Bases", font_size=36)
+        title = Text("5. Linear Independence and Basis", font_size=36)
         self.play(Write(title))
         self.wait(2)
         self.play(FadeOut(title))
 
         # Linear Independence explanation
-        linear_indep_text = Text("Linear Independence", font_size=28).to_edge(UP)
+        linear_indep_text = Text("5.1 Linear Independence", font_size=28).to_edge(UP)
         self.play(Write(linear_indep_text))
         self.wait(1)
 
         # Concept of Linear Independence
-        concept_text = Text("Vectors are linearly independent if no vector can be written as a linear combination of the others.", font_size=24)
-        concept_text.next_to(linear_indep_text, DOWN)
-        self.play(Write(concept_text))
+        line1 = Text("Vectors are linearly independent if no vector", font_size=24)
+        line2 = Text("can be written as a linear combination of the others.", font_size=24)
+
+        # Positioning the second line below the first
+        line1.next_to(linear_indep_text, DOWN)
+        line2.next_to(line1, DOWN)
+
+        # Adding both lines to the scene
+        self.play(Write(line1), Write(line2))
         self.wait(2)
 
         # Define two linearly independent vectors u and v
@@ -30,14 +36,21 @@ class LinearIndependenceAndBases(Scene):
         label_u = MathTex(r"\vec{u}").next_to(vec_u.get_end(), UP)
         label_v = MathTex(r"\vec{v}").next_to(vec_v.get_end(), UP)
 
+        vec_u.shift(DOWN * 0.5)
+        vec_v.shift(DOWN * 0.5)
+
+        label_u.shift(DOWN * 0.5)
+        label_v.shift(DOWN * 0.5)
+
         self.play(Create(vec_u), Write(label_u))
         self.play(Create(vec_v), Write(label_v))
         self.wait()
 
         # Visualizing the span of independent vectors (spans a plane)
         span_plane = Polygon(ORIGIN, u, v, color=PURPLE, fill_opacity=0.3)
-        span_text = Text("Independent: u and v span a plane", font_size=24, color=PURPLE).to_edge(UP)
+        span_text = Text("Independent: u and v span a plane", font_size=24, color=PURPLE).next_to(vec_v, DOWN, buff=0.5)
 
+        span_plane.shift(DOWN * 0.5)
         self.play(Create(span_plane), Write(span_text))
         self.wait(2)
 
@@ -47,10 +60,10 @@ class LinearIndependenceAndBases(Scene):
         self.wait(2)
 
         # Transition to dependent vectors
-        self.play(FadeOut(span_plane), FadeOut(vec_u), FadeOut(vec_v), FadeOut(label_u), FadeOut(label_v), FadeOut(span_text), FadeOut(check_text))
+        self.play(FadeOut(span_plane), FadeOut(vec_u), FadeOut(vec_v), FadeOut(label_u), FadeOut(label_v), FadeOut(span_text), FadeOut(check_text), FadeOut(linear_indep_text), FadeOut(line1), FadeOut(line2))
 
         # Linear Dependence explanation
-        linear_dep_text = Text("Linear Dependence", font_size=28).to_edge(UP)
+        linear_dep_text = Text("5.2 Linear Dependence", font_size=28).to_edge(UP)
         self.play(Write(linear_dep_text))
         self.wait(1)
 
@@ -61,11 +74,17 @@ class LinearIndependenceAndBases(Scene):
         self.wait(2)
 
         # Define linearly dependent vectors u and 2*u
-        vec_u = Arrow(start=ORIGIN, end=u, buff=0, color=BLUE)
-        vec_2u = Arrow(start=ORIGIN, end=2 * u, buff=0, color=GREEN)
+        vec_u = Arrow(start=ORIGIN, end=u, color=BLUE)
+        vec_2u = Arrow(start=ORIGIN, end=2 * u, color=GREEN)
+
+        vec_u.shift(DOWN * 0.5)
+        vec_2u.shift(DOWN * 0.5)
 
         label_u = MathTex(r"\vec{u}").next_to(vec_u.get_end(), UP)
         label_2u = MathTex(r"2\vec{u}").next_to(vec_2u.get_end(), UP)
+
+        label_u.shift(DOWN * 0.5)
+        label_2u.shift(DOWN * 0.5)
 
         # Show dependent vectors
         self.play(Create(vec_u), Write(label_u))
@@ -73,22 +92,36 @@ class LinearIndependenceAndBases(Scene):
         self.wait()
 
         # Visualizing dependence: Both vectors lie on the same line
-        dep_line = DashedLine(start=ORIGIN, end=2 * u, color=YELLOW)
-        dep_text = Text("Dependent: Both vectors lie on the same line", font_size=24, color=YELLOW).to_edge(UP)
 
+        dep_line = DashedLine(start=ORIGIN, end=2 * u, color=YELLOW)
+        dep_text = Text("Dependent: Both vectors lie on the same line", font_size=24, color=YELLOW)
+        dep_line.shift(DOWN * 0.5)
+        dep_text.next_to(vec_u, DOWN, buff=0.5)
+        
         self.play(Create(dep_line), Write(dep_text))
         self.wait(2)
 
         # Wrap-up: Independent vs Dependent Summary
         self.play(FadeOut(dep_line), FadeOut(vec_u), FadeOut(vec_2u), FadeOut(label_u), FadeOut(label_2u), FadeOut(dep_text), FadeOut(linear_dep_text), FadeOut(dep_concept_text))
 
-        summary_text = Text("Summary: Independent vs Dependent Vectors", font_size=28).to_edge(UP)
-        self.play(Write(summary_text))
-        summary_indep = Text("Independent: Vectors span a plane (or higher)", font_size=24, color=PURPLE)
-        summary_dep = Text("Dependent: Vectors lie on the same line", font_size=24, color=YELLOW)
-        summary_indep.next_to(summary_text, DOWN)
-        summary_dep.next_to(summary_indep, DOWN)
+      # Summary: Independent vs Dependent Vectors
+        summary_text = Text("Summary: Independent vs Dependent Vectors", font_size=28)
+        summary_text.move_to(ORIGIN + UP * 1.5)  # Move to the center-top of the screen
 
+        summary_indep = Text(
+            "Independent: Vectors span a plane (or higher)",
+            font_size=24,
+            color=PURPLE
+        ).next_to(summary_text, DOWN)
+
+        summary_dep = Text(
+            "Dependent: Vectors lie on the same line",
+            font_size=24,
+            color=YELLOW
+        ).next_to(summary_indep, DOWN)
+
+        # Display the summary
+        self.play(Write(summary_text))
         self.play(Write(summary_indep), Write(summary_dep))
         self.wait(2)
 

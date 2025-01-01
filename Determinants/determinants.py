@@ -3,7 +3,7 @@ from manim import *
 class DeterminantsIntroduction(Scene):
     def construct(self):
         # Title for the module
-        title = Text("Introduction to Determinants", font_size=36)
+        title = Text("7. Determinants", font_size=36)
         self.play(Write(title))
         self.wait(1)
         self.play(FadeOut(title))
@@ -12,7 +12,9 @@ class DeterminantsIntroduction(Scene):
         determinant_text = Text("Definition of Determinants", font_size=28).to_edge(UP)
         self.play(Write(determinant_text))
         
-        determinant_formula = MathTex(r"\det(\mathbf{A}) = ad - bc \text{ for a 2x2 matrix } \mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}")
+        determinant_formula = MathTex(
+            r"\det(\mathbf{A}) = ad - bc \text{ for a 2x2 matrix } \mathbf{A} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}"
+        )
         self.play(Write(determinant_formula))
         self.wait(2)
 
@@ -28,22 +30,25 @@ class DeterminantsIntroduction(Scene):
         self.play(Create(square), Write(label_square))
         self.wait(1)
         
-        parallelogram = Polygon(ORIGIN, RIGHT, 2 * RIGHT + 1.5 * UP, 1.5 * UP, color=YELLOW)
+        parallelogram = Polygon(
+            ORIGIN, RIGHT, 2 * RIGHT + 1.5 * UP, 1.5 * UP, color=YELLOW
+        )
         label_parallelogram = Text("Transformed Parallelogram", font_size=24).next_to(parallelogram, DOWN)
         self.play(Transform(square, parallelogram), Transform(label_square, label_parallelogram))
         self.wait(1)
 
         # Show area scaling
-        determinant_area_text = Text("Determinant as Area Scaling Factor", font_size=24).to_edge(UP)
-        area_text = Text("Area of Transformed Parallelogram = |det(A)|", font_size=20).next_to(parallelogram, RIGHT)
+        area_scaling_title = Text("Determinant as Area Scaling Factor", font_size=24).to_edge(UP)
+        area_text = Text("Area of Transformed Parallelogram = |det(A)|", font_size=20).next_to(parallelogram, DOWN, buff=1)
 
-        self.play(Transform(geo_text, determinant_area_text))
+        # Ensure geo_text is removed before new text is shown
+        self.play(FadeOut(geo_text))
+        self.play(Write(area_scaling_title))
         self.play(Write(area_text))
         self.wait(2)
+        self.play(FadeOut(square, label_square, parallelogram, label_parallelogram, area_text, area_scaling_title))
 
         # Move to 3D Volume Visualization
-        self.play(FadeOut(parallelogram, label_parallelogram, area_text, determinant_area_text))
-
         volume_text = Text("Determinant in 3D: Volume Scaling", font_size=28).to_edge(UP)
         self.play(Write(volume_text))
         
@@ -60,12 +65,7 @@ class DeterminantsIntroduction(Scene):
         self.wait(2)
 
         # Volume Scaling
-        determinant_volume_text = Text("Volume = |det(A)|", font_size=24).to_edge(UP)
+        determinant_volume_text = Text("Volume = |det(A)|", font_size=24).next_to(transformed_cube, DOWN, buff=1)
         self.play(Write(determinant_volume_text))
         self.wait(2)
-
-        # Conclusion
-        conclusion_text = Text("Determinants Scale Area/Volume in 2D/3D", font_size=24).to_edge(UP)
-        self.play(FadeOut(volume_text, transformed_cube, label_transformed_cube, determinant_volume_text))
-        self.play(Write(conclusion_text))
-        self.wait(2)
+        self.play(FadeOut(cube, label_cube, transformed_cube, label_transformed_cube, determinant_volume_text, volume_text))

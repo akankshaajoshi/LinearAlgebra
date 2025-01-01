@@ -7,7 +7,7 @@ class MatrixIntroduction(Scene):
         self.play(Write(title))
         self.wait(1)
 
-        #Introduction Section
+        # Introduction Section
         self.play(FadeOut(title))
         intro_title = Text("4.1 Introduction to Matrices", font_size=36)
         self.play(Write(intro_title))
@@ -15,7 +15,9 @@ class MatrixIntroduction(Scene):
         self.play(FadeOut(intro_title))
 
         # Definition of a Matrix
-        matrix_text = Text("A Matrix is a rectangular array of numbers.", font_size=24).to_edge(UP)
+        matrix_text_heading = Text("Definition of a Matrix", font_size=36).to_edge(UP)
+        matrix_text = Text("A Matrix is a rectangular array of numbers.", font_size=24).next_to(matrix_text_heading, DOWN)
+        self.play(Write(matrix_text_heading))
         self.play(Write(matrix_text))
         self.wait(1)
 
@@ -27,6 +29,7 @@ class MatrixIntroduction(Scene):
         self.wait(1)
         self.play(FadeOut(matrix_example))
         self.wait(1)
+        self.play(FadeOut(matrix_text), FadeOut(matrix_text_heading))
         
         intro_title = Text("4.2 Properties of Matrices", font_size=36)
         self.play(Write(intro_title))
@@ -47,10 +50,12 @@ class MatrixIntroduction(Scene):
         
         # Transition to Matrix Multiplication
         self.play(FadeOut(matrix_addition), FadeOut(result_addition))
+        self.play(FadeOut(addition_text, matrix_text))
 
+        # Matrix Multiplication
         multiplication_text = Text("Matrix Multiplication", font_size=28).to_edge(UP)
-        self.play(Transform(addition_text, multiplication_text))
-        
+        self.play(Write(multiplication_text))
+
         # Define matrices A and B
         matrix_A = MathTex(r"\mathbf{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}")
         matrix_B = MathTex(r"\mathbf{B} = \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix}")
@@ -60,52 +65,37 @@ class MatrixIntroduction(Scene):
         self.play(Write(matrix_A), Write(matrix_B))
         self.wait(1)
 
-        # Highlight the first row of A and the first column of B
-        row_A1 = SurroundingRectangle(matrix_A[0][3:5], color=BLUE)
-        col_B1 = SurroundingRectangle(matrix_B[0][2:4], color=GREEN)
-        self.play(Create(row_A1), Create(col_B1))
-        self.wait(1)
-
-        # Show the multiplication and addition for element (1,1)
-        element_11 = MathTex(r"1 \cdot 5 + 2 \cdot 7 = 19").to_edge(DOWN)
-        self.play(Write(element_11))
-        self.wait(1)
-
-        # Highlight the first row of A and the second column of B
-        col_B2 = SurroundingRectangle(matrix_B[0][6:9], color=GREEN)
-        self.play(Transform(col_B1, col_B2))
-        self.wait(1)
-
-        # Show the multiplication and addition for element (1,2)
-        element_12 = MathTex(r"1 \cdot 6 + 2 \cdot 8 = 22").to_edge(DOWN)
-        self.play(Transform(element_11, element_12))
-        self.wait(1)
-
         # Highlight the second row of A and the first column of B
         row_A2 = SurroundingRectangle(matrix_A[0][5:7], color=BLUE)
-        self.play(Transform(row_A1, row_A2), Transform(col_B2, col_B1))
+        col_B1 = SurroundingRectangle(matrix_B[0][2:4], color=GREEN)
+        self.play(Create(row_A2), Create(col_B1))
         self.wait(1)
 
         # Show the multiplication and addition for element (2,1)
         element_21 = MathTex(r"3 \cdot 5 + 4 \cdot 7 = 43").to_edge(DOWN)
-        self.play(Transform(element_11, element_21))
+        self.play(Write(element_21))
         self.wait(1)
 
+        # Remove the green box and show the next step
+        self.play(FadeOut(col_B1))
+
         # Highlight the second row of A and the second column of B
-        self.play(Transform(col_B1, col_B2))
+        col_B2 = SurroundingRectangle(matrix_B[0][6:9], color=GREEN)
+        self.play(Create(col_B2))
         self.wait(1)
 
         # Show the multiplication and addition for element (2,2)
         element_22 = MathTex(r"3 \cdot 6 + 4 \cdot 8 = 50").to_edge(DOWN)
-        self.play(Transform(element_11, element_22))
+        self.play(Transform(element_21, element_22))
+        self.play(FadeOut(row_A2, col_B2, element_21))
         self.wait(1)
 
         # Show the final result
         result_multiplication = MathTex(r"\mathbf{A} \times \mathbf{B} = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix}")
-        self.play(FadeOut(row_A1, col_B1, element_11, matrix_A, matrix_B))
+        self.play(FadeOut(matrix_A, matrix_B))
         self.play(Write(result_multiplication))
         self.wait(2)
-
+        self.play(FadeOut(result_multiplication), FadeOut(multiplication_text))
 
         # Special Matrices: Identity, Diagonal, Zero
         # self.play(FadeOut(matrix_multiplication), FadeOut(result_multiplication))
@@ -115,7 +105,7 @@ class MatrixIntroduction(Scene):
         diagonal_matrix = MathTex(r"\mathbf{D} = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix}")
         zero_matrix = MathTex(r"\mathbf{0} = \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}")
 
-        self.play(Transform(matrix_text, special_matrices_text))
+        self.play(Write(special_matrices_text))
         self.play(Write(identity_matrix))
         self.wait(1)
         self.play(FadeOut(identity_matrix))

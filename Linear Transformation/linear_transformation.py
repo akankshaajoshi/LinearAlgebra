@@ -1,41 +1,39 @@
-from re import L
 from manim import *
-import random
 
+class LinearTransformationIntro(Scene):
 
-class Matrix(LinearTransformationScene):
-    def __init__(self):
-        LinearTransformationScene.__init__(
-            self,
-            show_coordinates=True,
-            leave_ghost_vectors=True,
-            show_basis_vectors=True,
-        )
+    def title(self):
+        # Title Slide
+        intro_title = Text("6. Linear Transformation", font_size=36)
+        self.play(Write(intro_title))
+        self.wait(1)
+        self.play(FadeOut(intro_title))
 
     def construct(self):
 
-        matrix = [[1, 2], [2, 1]]
+        self.title()
 
-        matrix_tex = (
-            MathTex("A = \\begin{bmatrix} 1 & 2 \\\ 2 & 1 \\end{bmatrix}")
-            .to_edge(UL)
-            .add_background_rectangle()
-        )
+class LinearTransformationSummary(Scene):
+    def linear_transformation(self):
+        # Title for the linear transformation explanation
+        title = MathTex(r"\text{Linear Transformation}", font_size=36).to_edge(UP)
+        
+        # Create the text explaining the concept of linear transformations
+        points = VGroup(
+            MathTex(r"1.\ \text{A linear transformation maps vectors to new vectors.}", font_size=24),
+            MathTex(r"2.\ \text{A transformation is represented by a matrix } A \text{ such that } T(\mathbf{x}) = A\mathbf{x}.", font_size=24),
+            MathTex(r"3.\ \text{It preserves vector addition and scalar multiplication.}", font_size=24),
+            MathTex(r"4.\ \text{The matrix } A \text{ performs the transformation on a vector.}", font_size=24),
+            MathTex(r"5.\ \text{For example: } T(\mathbf{x}) = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} \mathbf{x}", font_size=24),
+            MathTex(r"6.\ \text{The determinant of } A \text{ indicates scaling and orientation.}", font_size=24),
+        ).arrange(DOWN, center=True, buff=0.8).move_to(ORIGIN) 
+        
+        # Animating the title and the text
+        self.play(Write(title))
+        self.wait(1)
+        self.play(FadeIn(points, lag_ratio=0.1))
+        self.wait(4)
+        self.play(FadeOut(title), FadeOut(points))
 
-        unit_square = self.get_unit_square()
-        text = always_redraw(
-            lambda: Tex("Det(A)").set(width=0.7).move_to(unit_square.get_center())
-        )
-
-        vect = self.get_vector([1, -2], color=PURPLE_B)
-
-        rect1 = Rectangle(
-            height=2, width=1, stroke_color=BLUE_A, fill_color=BLUE_D, fill_opacity=0.6
-        ).shift(UP * 2 + LEFT * 2)
-
-
-        self.add_transformable_mobject(vect, unit_square)
-        self.add_background_mobject(matrix_tex, text)
-        self.apply_matrix(matrix)
-
-        self.wait()
+    def construct(self):
+        self.linear_transformation()
